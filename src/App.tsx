@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Box, Center, Heading } from "@chakra-ui/layout";
+import { useState } from "react";
+import { Form } from "./Form";
+import { calculateCompoundInterest, ReportItem } from "./calculator";
+import { Report } from "./Report";
 
-function App() {
+export const App = () => {
+  const [report, setReport] = useState<ReportItem[]>([]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+    <Center>
+      <Box
+        width="100%"
+        maxWidth={1024}
+        marginTop={4}
+        paddingX={2}
+        textAlign="left"
+      >
+        <Heading>Calculadora de juros compostos</Heading>
+        <Box marginTop={4}>
+          <Form
+            onSubmit={(values) => {
+              const compoundInterestReport = calculateCompoundInterest(values);
 
-export default App;
+              setReport(compoundInterestReport);
+            }}
+          />
+        </Box>
+        {report.length > 0 && <Report report={report} />}
+      </Box>
+    </Center>
+  );
+};
